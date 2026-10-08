@@ -1,0 +1,10 @@
+import Link from 'next/link';
+import {notFound} from 'next/navigation';
+import {site} from '../config';
+const pages:Record<string,{titre:string;texte:string[]}> = {
+ 'mentions-legales':{titre:'Mentions légales',texte:['MODÈLE À COMPLÉTER AVANT PUBLICATION.','Éditeur du site : [raison sociale, forme juridique, adresse, SIREN].','Directeur de publication : [nom].','Contact : '+site.email,'Hébergeur : Vercel Inc. — vérifier et compléter les coordonnées officielles de l’hébergeur.','Propriété intellectuelle : préciser les droits applicables aux contenus publiés.']},
+ 'confidentialite':{titre:'Politique de confidentialité',texte:['MODÈLE À ADAPTER À VOS TRAITEMENTS RÉELS.','Responsable du traitement : [identité et coordonnées].','Données collectées : [décrire les données réellement collectées].','Finalités et bases légales : [à compléter].','Durées de conservation : [à compléter].','Destinataires, sous-traitants et transferts éventuels : [à compléter].','Droits RGPD : accès, rectification, effacement, opposition et autres droits applicables. Contact : '+site.email,'Cookies et traceurs : décrire les outils effectivement utilisés et prévoir le consentement lorsque nécessaire.']},
+ 'cgv':{titre:'Conditions générales de vente',texte:['DOCUMENT DE TRAVAIL — À PERSONNALISER ET FAIRE VALIDER AVANT UTILISATION.','Identité du vendeur : [à compléter].','Prestations, prix, devis et modalités de commande : [à compléter].','Paiement, livraison ou exécution, rétractation et garanties : [à adapter à l’activité et au type de clientèle].','Responsabilité, médiation de la consommation si applicable et règlement des litiges : [à compléter].']}
+};
+export function generateStaticParams(){return Object.keys(pages).map(slug=>({slug}));}
+export default async function Legal({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const p=pages[slug];if(!p)notFound();return <main className="legal wrap"><Link href="/">← Retour à l'accueil</Link><h1>{p.titre}</h1>{p.texte.map((t,i)=><p key={i}>{t}</p>)}</main>}
